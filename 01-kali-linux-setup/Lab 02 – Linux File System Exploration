@@ -1,0 +1,256 @@
+## Objective
+
+The goal of this lab is to understand the Linux file system and practice basic commands used to navigate directories, locate files, identify hidden files, and inspect important system locations.
+
+These skills are useful in cybersecurity because analysts often need to examine system files, configuration files, user directories, temporary files, and logs during security investigations.
+
+---
+
+## Lab Environment
+
+* Operating System: Kali Linux
+* Platform: Virtual Machine
+* User: `afu`
+* Terminal: Bash
+
+---
+
+## Learning Objectives
+
+By completing this lab, I will practice:
+
+* Navigating the Linux file system
+* Understanding important Linux directories
+* Identifying system and configuration files
+* Finding specific files using `find`
+* Viewing hidden files
+* Exploring the user's home directory
+* Inspecting `/var/log` and `/tmp`
+* Understanding how Linux file-system knowledge supports incident investigation
+
+---
+
+## Tasks
+
+### Task 1 – Identify the Current Directory
+
+Check the directory where you are currently working.
+
+```bash
+pwd
+```
+
+Expected result:
+
+The command displays the current working directory.
+
+---
+
+### Task 2 – Explore the Root Directory
+
+Move to the root directory and list its contents.
+
+```bash
+cd /
+ls
+```
+
+Important directories to identify include:
+
+```text
+/bin
+/etc
+/home
+/opt
+/tmp
+/usr
+/var
+```
+
+---
+
+### Task 3 – Explore Important Linux Directories
+
+Inspect several important directories.
+
+```bash
+ls /etc
+ls /home
+ls /var
+ls /tmp
+```
+
+Pay attention to the purpose of each directory and the type of information stored there.
+
+---
+
+### Task 4 – View Hidden Files
+
+Move to the home directory and display all files, including hidden files.
+
+```bash
+cd ~
+ls -la
+```
+
+Hidden files and directories usually begin with a `.` character.
+
+---
+
+### Task 5 – Locate Important System Files
+
+Use the `find` command to locate specific files.
+
+```bash
+find /etc -name hosts
+find /etc -name passwd
+find /etc -name sudoers
+```
+
+These commands demonstrate how an analyst can search a directory tree for specific files.
+
+---
+
+### Task 6 – Investigate System and Temporary Locations
+
+Inspect the following locations:
+
+```bash
+ls /var/log
+ls -la ~
+ls -la /tmp
+```
+
+Consider what type of information an investigator might find in:
+
+* `/var/log` — system and application logs
+* `/tmp` — temporary files
+* `~` — files belonging to the current user
+
+---
+
+### Task 7 – Challenge
+
+Try to locate the shadow password file:
+
+```bash
+find /etc -name shadow
+```
+
+Then observe whether you can access it as a normal user.
+
+> Do not modify or delete system files during this lab.
+
+---
+
+## Blue Team Relevance
+
+Linux file-system knowledge is important for security monitoring and incident response.
+
+During an investigation, a security analyst may need to:
+
+* Locate configuration files
+* Examine system logs
+* Identify suspicious files
+* Check temporary directories
+* Investigate user directories
+* Search for files associated with suspicious activity
+
+Understanding the normal Linux file structure makes unusual files and activity easier to recognize.
+
+---
+
+## Evidence
+
+The following evidence should be collected during the lab:
+
+* Current directory output
+* Root directory listing
+* Important directory listings
+* Hidden-file listing
+* `find` command results
+* `/var/log` listing
+* `/tmp` listing
+* Challenge result
+
+Screenshots can be stored in:
+
+```text
+screenshots/
+```
+
+---
+
+## What I Learned
+
+Through this lab, I practiced navigating the Linux file system and learned the purpose of several important directories.
+
+I also practiced using commands such as:
+
+```text
+pwd
+cd
+ls
+ls -la
+find
+```
+
+These are basic commands, but they are useful for cybersecurity investigations because analysts frequently need to navigate systems and locate relevant files.
+
+---
+
+## Challenge / Reflection
+
+After completing the lab, I considered:
+
+1. Which Linux directories contain security-relevant information?
+2. Why are hidden files important during an investigation?
+3. Why might `/var/log` be useful to a SOC analyst?
+4. Why should system files such as `/etc/shadow` be protected?
+5. How could the `find` command help during an incident investigation?
+
+---
+
+## Key Takeaways
+
+* Linux organizes files and system resources into a structured directory hierarchy.
+* `/etc` contains important system configuration files.
+* `/var/log` contains logs that can provide useful investigation evidence.
+* `/tmp` can contain temporary files that may be relevant during an investigation.
+* Hidden files can be identified with `ls -la`.
+* The `find` command can be used to locate files.
+* Understanding normal system structure is important for identifying suspicious activity.
+
+---
+
+## Lab Status
+
+**Status:** Completed
+
+**Platform:** Kali Linux
+
+**Focus:** Linux File System and Basic Investigation Commands
+
+---
+
+## Next Lab
+
+### Lab 03 – Nmap Network Reconnaissance
+
+In the next lab, I will practice:
+
+* Identifying my Kali Linux IP address
+* Understanding localhost and network interfaces
+* Scanning my own system with Nmap
+* Checking TCP ports
+* Understanding open and closed ports
+* Performing basic service detection
+* Documenting network reconnaissance results
+
+The first target will be my own Kali Linux localhost:
+
+```text
+127.0.0.1
+```
+
+All scanning will be performed on systems I own or am authorized to test.

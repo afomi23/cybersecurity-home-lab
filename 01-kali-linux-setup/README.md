@@ -1,0 +1,126 @@
+# Lab 01 – Build Your Cyber Lab
+
+## 1. Objective
+
+The goal of this lab is to build a safe cybersecurity practice environment by installing Kali Linux inside Oracle VirtualBox.
+
+This lab will be used for future cybersecurity and SOC exercises.
+
+## 2. Lab Environment
+
+* Host Operating System: Windows 10/11
+* Virtualization Software: Oracle VirtualBox
+* Virtual Machine: Kali Linux 64-bit
+* Network Adapter: NAT
+* Optional Network: Host-Only
+* Virtual Disk: 40 GB
+* Host RAM: At least 8 GB
+
+## 3. Tasks
+
+In this lab, I will:
+
+1. Install Oracle VirtualBox.
+2. Download Kali Linux.
+3. Create a Kali Linux virtual machine.
+4. Configure CPU, RAM, storage, and networking.
+5. Install Kali Linux.
+6. Test internet connectivity.
+7. Update Kali Linux.
+8. Install Guest Additions.
+9. Create a snapshot of the working system.
+
+## 4. Network Configuration
+
+### NAT
+
+The NAT network allows the Kali Linux virtual machine to access the internet through the host computer.
+
+### Host-Only Network
+
+A Host-Only network can be used later to allow communication between virtual machines in the cybersecurity lab without directly exposing the lab machines to the home network.
+
+## 5. Commands Used
+
+### Check IP Address
+
+```bash
+ip addr
+```
+
+This command displays the network interfaces and IP addresses of the Kali Linux system.
+
+### Test Internet Connection
+
+```bash
+ping -c 4 google.com
+```
+
+This command checks whether Kali Linux can communicate with the internet.
+
+### Update Kali Linux
+
+```bash
+sudo apt update
+sudo apt full-upgrade
+```
+
+These commands update the package information and installed software.
+
+## 6. Evidence
+
+I will document the lab using screenshots of:
+
+* Kali Linux running in VirtualBox
+* Virtual machine settings
+* Network configuration
+* Successful internet connection
+* Kali Linux system update
+* Guest Additions
+* VM snapshot
+
+## 7. Challenge
+
+After completing the installation, I will:
+
+* Change the Kali Linux wallpaper.
+* Change the hostname.
+* Create a user.
+* Install a package.
+* Restart the system.
+* Verify that the system still works correctly.
+
+## 8. What I Learned
+
+In this lab, I learned how to create a virtual cybersecurity environment using VirtualBox and Kali Linux.
+
+I also learned basic virtual machine networking, system updates, and the importance of snapshots when building a security testing environment.
+
+## 9. Cybersecurity / Blue Team Relevance
+
+A virtual lab provides a controlled environment for cybersecurity practice.
+
+It can later be used to:
+
+* Generate security events.
+* Analyze network traffic.
+* Investigate logs.
+* Practice incident response.
+* Test security tools.
+* Build and investigate SOC scenarios.
+
+## 10. Result
+
+The lab will be considered complete when:
+
+* Kali Linux boots successfully.
+* Internet connectivity works.
+* The system is updated.
+* Guest Additions work correctly.
+* A working snapshot has been created.
+
+## 11. Next Lab
+
+**Lab 02 – Linux Fundamentals**
+
+The next lab will focus on Linux commands, file systems, users, permissions, processes, networking, and basic system administration.

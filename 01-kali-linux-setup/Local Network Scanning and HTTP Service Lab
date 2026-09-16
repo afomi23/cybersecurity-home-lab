@@ -1,0 +1,318 @@
+## About the Lab
+
+In this lab, I practiced basic network scanning and service identification on my Kali Linux machine.
+
+The main goal was to understand how I can use Nmap to find open ports and identify running services, and then use cURL to check what a web service is actually returning.
+
+I performed all the testing against my own machine using `127.0.0.1`.
+
+---
+
+## Lab Environment
+
+* **Operating System:** Kali Linux
+* **Network Interface:** `eth0`
+* **IP Address:** `10.0.2.15`
+* **Loopback Address:** `127.0.0.1`
+* **Nmap Version:** 7.95
+* **Python Version:** 3.13.2
+* **Web Server:** Python SimpleHTTPServer
+* **Web Server Port:** 8000
+* **Tool used to test HTTP:** cURL
+
+---
+
+## 1. Checking My Network Configuration
+
+I started by checking the network interfaces on my Kali machine.
+
+```bash
+ip addr
+```
+
+My `eth0` interface had the following IPv4 address:
+
+```text
+10.0.2.15/24
+```
+
+I also had the loopback address:
+
+```text
+127.0.0.1
+```
+
+For this lab, I used `127.0.0.1` because it refers to my own machine.
+
+---
+
+## 2. Running a Basic Nmap Scan
+
+First, I scanned the localhost using the default Nmap scan.
+
+```bash
+nmap 127.0.0.1
+```
+
+The result showed that all 1,000 default TCP ports were closed.
+
+```text
+Not shown: 1000 closed tcp ports (reset)
+```
+
+At this point, Nmap did not find any open ports among the default ports it scanned.
+
+---
+
+## 3. Checking Common Ports
+
+I then checked three common service ports:
+
+```bash
+nmap -p 22,80,443 127.0.0.1
+```
+
+The result was:
+
+```text
+PORT    STATE  SERVICE
+22/tcp  closed ssh
+80/tcp  closed http
+443/tcp closed https
+```
+
+This showed that SSH, HTTP, and HTTPS were not running on their usual ports.
+
+---
+
+## 4. Checking for Services
+
+Next, I used Nmap's service detection option:
+
+```bash
+nmap -sV 127.0.0.1
+```
+
+Again, no services were found on the default 1,000 ports.
+
+This made me realize that a service could still be running on a different, non-standard port.
+
+---
+
+## 5. Finding the HTTP Service on Port 8000
+
+I knew I had a Python web server running on port 8000, so I specifically scanned that port.
+
+```bash
+nmap -p 8000 127.0.0.1
+```
+
+This time Nmap found an open port:
+
+```text
+PORT     STATE SERVICE
+8000/tcp open  http-alt
+```
+
+So TCP port 8000 was open and accepting connections.
+
+---
+
+## 6. Identifying the Service
+
+I then used service detection on port 8000:
+
+```bash
+nmap -sV -p 8000 127.0.0.1
+```
+
+Nmap identified the service as:
+
+```text
+PORT     STATE SERVICE VERSION
+8000/tcp open  http    SimpleHTTPServer 0.6 (Python 3.13.2)
+```
+
+This confirmed that the service was a Python HTTP server running on port 8000.
+
+---
+
+## 7. Installing cURL
+
+I wanted to interact directly with the HTTP service, so I tried:
+
+```bash
+curl http://127.0.0.1:8000
+```
+
+At first, cURL was not installed.
+
+I tried installing it with:
+
+```bash
+sudo apt install curl
+```
+
+The first attempt failed with `404 Not Found` errors because my local package information was outdated.
+
+I updated the package lists:
+
+```bash
+sudo apt update
+```
+
+After that, I installed cURL successfully:
+
+```bash
+sudo apt install curl
+```
+
+---
+
+## 8. Testing the Web Server with cURL
+
+After installing cURL, I ran:
+
+```bash
+curl http://127.0.0.1:8000
+```
+
+The server returned an HTML directory listing.
+
+The response included files and directories such as:
+
+```text
+.bash_history
+.ssh/
+capture.pcap
+Documents/
+Downloads/
+Pictures/
+```
+
+This was an important observation.
+
+---
+
+## 9. Security Finding
+
+The Python web server was serving my home directory instead of a separate directory created specifically for the web server.
+
+Because of this, the HTTP directory listing showed the names of files and directories from my home directory.
+
+For example:
+
+```text
+.ssh/
+.bash_history
+capture.pcap
+```
+
+I did not treat the filenames alone as proof that all of those files were publicly readable. However, exposing the directory listing was still something I would not want on a real system.
+
+If a similar server were accessible to other users or an untrusted network, it could provide useful information about the files stored on the system.
+
+---
+
+## 10. Fixing the Configuration
+
+Instead of serving my entire home directory, I can create a separate directory for the lab:
+
+```bash
+mkdir -p ~/siem-lab/web
+```
+
+Then create a simple test page:
+
+```bash
+echo "SIEM Lab Test Server" > ~/siem-lab/web/index.html
+```
+
+Move into that directory:
+
+```bash
+cd ~/siem-lab/web
+```
+
+Then start the web server:
+
+```bash
+python3 -m http.server 8000
+```
+
+Now the server will only serve files that I intentionally put inside the lab directory.
+
+I can test it again with:
+
+```bash
+curl http://127.0.0.1:8000
+```
+
+---
+
+## 11. What I Learned
+
+This lab helped me understand several basic security concepts:
+
+* How to check my network interfaces using `ip addr`.
+* How to scan a host with Nmap.
+* How to check specific ports.
+* How to identify services with `nmap -sV`.
+* Why checking only common ports is not always enough.
+* How to test an HTTP service with cURL.
+* How a simple configuration mistake can expose information.
+* Why services should only expose the files they actually need.
+
+One of the most useful lessons for me was that finding an open port is only the beginning. After finding the service, I need to understand **what the service is doing and what information it is exposing**.
+
+---
+
+## 12. Commands I Used
+
+```bash
+ip addr
+```
+
+```bash
+nmap 127.0.0.1
+```
+
+```bash
+nmap -p 22,80,443 127.0.0.1
+```
+
+```bash
+nmap -sV 127.0.0.1
+```
+
+```bash
+nmap -p 8000 127.0.0.1
+```
+
+```bash
+nmap -sV -p 8000 127.0.0.1
+```
+
+```bash
+sudo apt update
+```
+
+```bash
+sudo apt install curl
+```
+
+```bash
+curl http://127.0.0.1:8000
+```
+
+---
+
+## Conclusion
+
+In this lab, I started with basic network discovery and gradually investigated a running HTTP service on my Kali machine.
+
+The standard ports were closed, but port `8000` was open. Nmap identified the service as Python's `SimpleHTTPServer`, and cURL confirmed that it was returning a directory listing.
+
+The most important part of the exercise was noticing that the server was exposing my home directory. This helped me connect a simple networking exercise with a real security problem: **unnecessary information exposure**.
+
+This is a useful starting point for my SIEM and SOC learning because it follows a basic investigation process: discover the service, identify it, interact with it, examine the result, and document the security finding.
